@@ -1,30 +1,45 @@
-export function handleError(error: unknown, context: string = "") {
-	const errorMessage =
-		error instanceof Error ? error.message : "An unknown error occurred";
-	console.error(`Error${context ? ` in ${context}` : ""}: ${errorMessage}`);
+export function handleGetAllData(context: string, data: any) {
+	const text = [
+		`All ${context.toLowerCase()} retrieved successfully.`,
+		`Data Size: ${data.length}`,
+		JSON.stringify(data, null, 2),
+	].join("\n\n");
 
 	return {
-		content: [{ type: "text" as const, text: `Error: ${errorMessage}` }],
-		isError: true,
+		content: [{ type: "text" as const, text }],
 	};
 }
 
-export function handleGetAllData(context: string, data: any) {
+export function handleGetDataById(context: string, id: string, data: any) {
+	const text = [
+		`${context} with ID: ${id} retrieved successfully.`,
+		JSON.stringify(data, null, 2),
+	].join("\n\n");
+
 	return {
-		content: [
-			{
-				type: "text" as const,
-				text: `All ${context.toLowerCase()} retrieved successfully.`,
-			},
-			{
-				type: "text" as const,
-				text: `Data Size: ${data.length}`,
-			},
-			{
-				type: "text" as const,
-				text: JSON.stringify(data, null, 2),
-			},
-		],
+		content: [{ type: "text" as const, text }],
+	};
+}
+
+export function handleCreateData(context: string, data: any) {
+	const text = [
+		`${context} ${data.id} created successfully.`,
+		JSON.stringify(data, null, 2),
+	].join("\n\n");
+
+	return {
+		content: [{ type: "text" as const, text }],
+	};
+}
+
+export function handleUpdateData(context: string, id: string, data: any) {
+	const text = [
+		`${context} with ID: ${id} updated successfully.`,
+		JSON.stringify(data, null, 2),
+	].join("\n\n");
+
+	return {
+		content: [{ type: "text" as const, text }],
 	};
 }
 
@@ -39,48 +54,6 @@ export function handleNoDataFound(context: string, id: string) {
 	};
 }
 
-export function handleGetDataById(context: string, id: string, data: any) {
-	return {
-		content: [
-			{
-				type: "text" as const,
-				text: `${context} with ID: ${id} retrieved successfully.`,
-			},
-			{
-				type: "text" as const,
-				text: JSON.stringify(data, null, 2),
-			},
-		],
-	};
-}
-
-export function handleCreateData(context: string, data: any) {
-	return {
-		content: [
-			{
-				type: "text" as const,
-				text: `${context} ${data.id} created successfully.`,
-			},
-			{ type: "text" as const, text: JSON.stringify(data, null, 2) },
-		],
-	};
-}
-
-export function handleUpdateData(context: string, id: string, data: any) {
-	return {
-		content: [
-			{
-				type: "text" as const,
-				text: `${context} with ID: ${id} updated successfully.`,
-			},
-			{
-				type: "text" as const,
-				text: JSON.stringify(data, null, 2),
-			},
-		],
-	};
-}
-
 export function handleDeleteData(context: string, id: string) {
 	return {
 		content: [
@@ -89,5 +62,16 @@ export function handleDeleteData(context: string, id: string) {
 				text: `${context} with ID: ${id} deleted successfully.`,
 			},
 		],
+	};
+}
+
+export function handleError(error: unknown, context: string = "") {
+	const errorMessage =
+		error instanceof Error ? error.message : "An unknown error occurred";
+	console.error(`Error${context ? ` in ${context}` : ""}: ${errorMessage}`);
+
+	return {
+		content: [{ type: "text" as const, text: `Error: ${errorMessage}` }],
+		isError: true,
 	};
 }
