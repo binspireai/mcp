@@ -1,13 +1,13 @@
 {
-  "version": "7",
-  "dialect": "postgresql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "7",
-      "when": 1766461060102,
-      "tag": "0000_magenta_sheva_callister",
-      "breakpoints": true
-    }
-  ]
+	"version": "7",
+	"dialect": "postgresql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "7",
+			"when": 1766461060102,
+			"tag": "0000_magenta_sheva_callister",
+			"breakpoints": true
+		}
+	]
 }
