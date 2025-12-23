@@ -1,0 +1,52 @@
+{
+  "name": "@binspire/mcp",
+  "type": "module",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "bun@1.3.4",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "muppet": "bunx muppet-kit inspector",
+    "dev:stdio": "TRANSPORT=stdio bun run ./src/index.ts",
+    "dev:http": "TRANSPORT=http bun run ./src/index.ts",
+    "start:stdio": "TRANSPORT=stdio node dist/index.js",
+    "start:http": "TRANSPORT=http node dist/index.js",
+    "format": "bunx biome format --write",
+    "lint": "bunx biome lint --write",
+    "check": "bunx biome check --write",
+    "prepush": "bun run format && bun run lint && bun run check",
+    "generate": "bun drizzle-kit generate",
+    "migrate": "bun drizzle-kit migrate",
+    "push": "bun drizzle-kit push",
+    "pull": "bun drizzle-kit pull"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@biomejs/biome": "2.3.10",
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.31.8",
+    "lefthook": "^2.0.12",
+    "tsdown": "^0.18.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@hono/mcp": "^0.2.2",
+    "@modelcontextprotocol/sdk": "^1.25.1",
+    "@neondatabase/serverless": "^1.0.2",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.1",
+    "drizzle-zod": "^0.8.3",
+    "hono": "^4.11.1",
+    "zod": "^4.2.1"
+  }
+}
