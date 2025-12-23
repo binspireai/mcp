@@ -2,8 +2,8 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { eq } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import z from "zod";
-import { db } from "../db";
-import { audit } from "../db/migrations/schema";
+import { db } from "@/db";
+import { audit } from "@/db/migrations/schema";
 import {
 	handleCreateData,
 	handleDeleteData,
@@ -12,7 +12,7 @@ import {
 	handleGetDataById,
 	handleNoDataFound,
 	handleUpdateData,
-} from "../lib/utils";
+} from "@/lib/utils";
 
 const InsertAuditSchema = createInsertSchema(audit).strict();
 const UpdateAuditSchema = InsertAuditSchema.partial();
