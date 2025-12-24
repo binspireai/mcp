@@ -2,7 +2,7 @@ import z from "zod";
 
 export const PaginationSchema = z.object({
 	limit: z.number().min(1).max(100).default(10),
-	offset: z.number().min(10).default(0),
+	offset: z.number().min(1).default(10),
 });
 
 export const IdSchema = z.object({

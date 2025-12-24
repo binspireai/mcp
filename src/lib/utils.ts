@@ -7,6 +7,7 @@ export function handleGetAllData(context: string, data: any) {
 
 	return {
 		content: [{ type: "text" as const, text }],
+		structuredContent: { data },
 	};
 }
 
@@ -18,6 +19,7 @@ export function handleGetDataById(context: string, id: string, data: any) {
 
 	return {
 		content: [{ type: "text" as const, text }],
+		structuredContent: data,
 	};
 }
 
@@ -29,6 +31,7 @@ export function handleCreateData(context: string, data: any) {
 
 	return {
 		content: [{ type: "text" as const, text }],
+		structuredContent: data,
 	};
 }
 
@@ -40,6 +43,7 @@ export function handleUpdateData(context: string, id: string, data: any) {
 
 	return {
 		content: [{ type: "text" as const, text }],
+		structuredContent: data,
 	};
 }
 
