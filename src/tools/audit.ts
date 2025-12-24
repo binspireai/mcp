@@ -4,6 +4,7 @@ import { createInsertSchema } from "drizzle-zod";
 import z from "zod";
 import { db } from "@/db";
 import { audit } from "@/db/migrations/schema";
+import { IdSchema, PaginationSchema } from "@/lib/schema";
 import {
 	handleCreateData,
 	handleDeleteData,
@@ -23,14 +24,17 @@ export function registerAuditTools(server: McpServer) {
 		{
 			title: "Get All Audits",
 			description: "Retrieve a list of all audits.",
-			inputSchema: undefined,
+			inputSchema: PaginationSchema,
 		},
-		async () => {
+		async ({ limit = 10, offset = 10 }) => {
 			try {
 				const data = await db.query.audit.findMany({
 					with: {
 						user: true,
 					},
+					limit,
+					offset,
+					orderBy: (audits, { desc }) => [desc(audits.createdAt)],
 				});
 				return handleGetAllData("Audits", data);
 			} catch (error) {
@@ -44,9 +48,7 @@ export function registerAuditTools(server: McpServer) {
 		{
 			title: "Get Audit by ID",
 			description: "Retrieve an audit by its ID.",
-			inputSchema: {
-				id: z.string().min(1, "ID cannot be empty"),
-			},
+			inputSchema: IdSchema,
 		},
 		async ({ id }) => {
 			try {
@@ -130,9 +132,7 @@ export function registerAuditTools(server: McpServer) {
 		{
 			title: "Delete Audit",
 			description: "Delete an audit entry by its ID.",
-			inputSchema: {
-				id: z.string().min(1, "ID cannot be empty"),
-			},
+			inputSchema: IdSchema,
 		},
 		async ({ id }) => {
 			try {

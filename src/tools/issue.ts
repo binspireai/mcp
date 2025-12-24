@@ -2,6 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { eq } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import z from "zod";
+import { IdSchema, PaginationSchema } from "@/lib/schema";
 import { db } from "../db";
 import { issues } from "../db/migrations/schema";
 import {
@@ -23,14 +24,17 @@ export function registerIssueTools(server: McpServer) {
 		{
 			title: "Get All Issues",
 			description: "Retrieve a list of all issues.",
-			inputSchema: undefined,
+			inputSchema: PaginationSchema,
 		},
-		async () => {
+		async ({ limit = 10, offset = 10 }) => {
 			try {
 				const data = await db.query.issues.findMany({
 					with: {
 						user: true,
 					},
+					limit,
+					offset,
+					orderBy: (issues, { desc }) => [desc(issues.createdAt)],
 				});
 				return handleGetAllData("Issues", data);
 			} catch (error) {
@@ -44,9 +48,7 @@ export function registerIssueTools(server: McpServer) {
 		{
 			title: "Get Issue by ID",
 			description: "Retrieve an issue by its ID.",
-			inputSchema: {
-				id: z.string().min(1, "ID cannot be empty"),
-			},
+			inputSchema: IdSchema,
 		},
 		async ({ id }) => {
 			try {
@@ -128,9 +130,7 @@ export function registerIssueTools(server: McpServer) {
 		{
 			title: "Delete Issue",
 			description: "Delete an issue entry by its ID.",
-			inputSchema: {
-				id: z.string().min(1, "ID cannot be empty"),
-			},
+			inputSchema: IdSchema,
 		},
 		async ({ id }) => {
 			try {

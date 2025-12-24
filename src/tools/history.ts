@@ -2,6 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { eq } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import z from "zod";
+import { IdSchema, PaginationSchema } from "@/lib/schema";
 import { db } from "../db";
 import { history } from "../db/migrations/schema";
 import {
@@ -23,14 +24,17 @@ export function registerHistoryTools(server: McpServer) {
 		{
 			title: "Get All Histories",
 			description: "Retrieve a list of all histories.",
-			inputSchema: undefined,
+			inputSchema: PaginationSchema,
 		},
-		async () => {
+		async ({ limit = 10, offset = 10 }) => {
 			try {
 				const data = await db.query.history.findMany({
 					with: {
 						user: true,
 					},
+					limit,
+					offset,
+					orderBy: (history, { desc }) => [desc(history.createdAt)],
 				});
 				return handleGetAllData("Histories", data);
 			} catch (error) {
@@ -44,9 +48,7 @@ export function registerHistoryTools(server: McpServer) {
 		{
 			title: "Get History by ID",
 			description: "Retrieve a history by its ID.",
-			inputSchema: {
-				id: z.string().min(1, "ID cannot be empty"),
-			},
+			inputSchema: IdSchema,
 		},
 		async ({ id }) => {
 			try {
@@ -132,9 +134,7 @@ export function registerHistoryTools(server: McpServer) {
 		{
 			title: "Delete History",
 			description: "Delete a history record by its ID.",
-			inputSchema: {
-				id: z.string().min(1, "ID cannot be empty"),
-			},
+			inputSchema: IdSchema,
 		},
 		async ({ id }) => {
 			try {
