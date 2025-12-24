@@ -27,7 +27,11 @@ export function registerHistoryTools(server: McpServer) {
 		},
 		async () => {
 			try {
-				const data = await db.query.history.findMany();
+				const data = await db.query.history.findMany({
+					with: {
+						user: true,
+					},
+				});
 				return handleGetAllData("Histories", data);
 			} catch (error) {
 				return handleError(error, "get-all-histories");
@@ -48,6 +52,9 @@ export function registerHistoryTools(server: McpServer) {
 			try {
 				const data = await db.query.history.findFirst({
 					where: (history, { eq }) => eq(history.id, id),
+					with: {
+						user: true,
+					},
 				});
 
 				if (!data) return handleNoDataFound("History", id);

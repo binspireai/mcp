@@ -27,7 +27,11 @@ export function registerIssueTools(server: McpServer) {
 		},
 		async () => {
 			try {
-				const data = await db.query.issues.findMany();
+				const data = await db.query.issues.findMany({
+					with: {
+						user: true,
+					},
+				});
 				return handleGetAllData("Issues", data);
 			} catch (error) {
 				return handleError(error, "get-all-issues");
@@ -48,6 +52,9 @@ export function registerIssueTools(server: McpServer) {
 			try {
 				const data = await db.query.issues.findFirst({
 					where: (issues, { eq }) => eq(issues.id, id),
+					with: {
+						user: true,
+					},
 				});
 
 				if (!data) return handleNoDataFound("Issue", id);

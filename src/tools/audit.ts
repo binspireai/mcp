@@ -27,7 +27,11 @@ export function registerAuditTools(server: McpServer) {
 		},
 		async () => {
 			try {
-				const data = await db.query.audit.findMany();
+				const data = await db.query.audit.findMany({
+					with: {
+						user: true,
+					},
+				});
 				return handleGetAllData("Audits", data);
 			} catch (error) {
 				return handleError(error, "get-all-audits");
@@ -48,6 +52,9 @@ export function registerAuditTools(server: McpServer) {
 			try {
 				const data = await db.query.audit.findFirst({
 					where: (audit, { eq }) => eq(audit.id, id),
+					with: {
+						user: true,
+					},
 				});
 
 				if (!data) return handleNoDataFound("Audit", id);
